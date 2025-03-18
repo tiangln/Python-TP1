@@ -28,19 +28,22 @@ answers = [
 correct_answers_index = [1, 2, 0, 3, 1]
 total_score = 0
 # El usuario deberá contestar 3 preguntas
-for _ in range(3):
-    # Se selecciona una pregunta aleatoria
-    question_index = random.randint(0, len(questions) - 1)
+# Se seleccionan 3 preguntas aleatorias
+questions_to_ask = random.choices((list(zip(questions,
+                                            answers,
+                                            correct_answers_index))), k=3)
 
+for question, possible_answers, correct_answer in questions_to_ask:
     # Se muestra la pregunta y las respuestas posibles
-    print(questions[question_index])
-    for i, answer in enumerate(answers[question_index]):
+    print(question)
+    for i, answer in enumerate(possible_answers):
         print(f"{i + 1}. {answer}")
 
     # El usuario tiene 2 intentos para responder
     # correctamente
     for intento in range(2):
         user_answer = input("Respuesta: ")
+        # Se valida la respuesta
         if  not user_answer.isdigit():
             print("Respuesta no válida.")
             sys.exit(1)
@@ -49,25 +52,26 @@ for _ in range(3):
         if not 0 <= user_answer < 4:
             print("Respuesta no válida.")
             sys.exit(1)
+
         # Se verifica si la respuesta es correcta
-        if user_answer == correct_answers_index[question_index]:
+        if user_answer == correct_answer:
             total_score += 1
             print("¡Correcto!")
             break
-        total_score -= 0.5
+
+        if total_score > 0:
+            total_score -= 0.5
     else:
         # Si el usuario no responde correctamente después de 2 intentos,
         # se muestra la respuesta correcta
         print("Incorrecto. La respuesta correcta es:")
-        print(answers[question_index][correct_answers_index[question_index]])
+        print(possible_answers[correct_answer])
 
     # Se imprime un blanco al final de la pregunta
     print()
 
-if total_score >= 0:
-    if total_score.is_integer():
-        print(f"Puntaje: {int(total_score)}")
-    else:
-        print(f"Puntaje: {total_score}")
+
+if total_score.is_integer():
+    print(f"Puntaje: {int(total_score)}")
 else:
-    print("Puntaje: 0.")
+    print(f"Puntaje: {total_score}")
