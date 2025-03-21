@@ -28,10 +28,10 @@ answers = [
 correct_answers_index = [1, 2, 0, 3, 1]
 total_score = 0
 # El usuario deberá contestar 3 preguntas
-# Se seleccionan 3 preguntas aleatorias
-questions_to_ask = random.choices((list(zip(questions,
-                                            answers,
-                                            correct_answers_index))), k=3)
+# Se seleccionan 3 preguntas aleatorias no repetidas
+questions_to_ask = random.sample(list(zip(questions,
+                                          answers,
+                                          correct_answers_index)), k=3)
 
 for question, possible_answers, correct_answer in questions_to_ask:
     # Se muestra la pregunta y las respuestas posibles
@@ -69,7 +69,6 @@ for question, possible_answers, correct_answer in questions_to_ask:
 
     # Se imprime un blanco al final de la pregunta
     print()
-
 
 if total_score.is_integer():
     print(f"Puntaje: {int(total_score)}")
